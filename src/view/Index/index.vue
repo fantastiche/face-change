@@ -13,10 +13,10 @@
       <router-view></router-view>
     </transition>
     <div class="bottom">
-      <div class="bottom-button">
+      <router-link class="bottom-button" to="/takePhoto">
         <img src="./tp.png" alt="">
         <span>我要上传/拍照</span>
-      </div>
+      </router-link>
       <div class="bottom-button">
         <img src="./mine.png" alt="">
         <span>我的美拍</span>
@@ -75,6 +75,9 @@
     mounted: function () {
       const that = this
       this.$nextTick(function () {
+        that.$router.push({
+          path: '/index/pageAll'
+        })
         that.item = document.getElementsByClassName('tab-item')
         that.flagLeft = that.item[0].offsetWidth / 2 - that.$refs.activeFlag.offsetWidth / 2
         that.$refs.activeFlag.style.left = this.flagLeft + 'px'
@@ -100,6 +103,7 @@
     display: flex;
     align-items: center;
     background: url("./bg.png") repeat center;
+    background-size: 14/@rem 14/@rem;
     .bottom-button {
       flex-grow: 1;
       display: flex;

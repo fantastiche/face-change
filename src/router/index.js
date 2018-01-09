@@ -26,6 +26,10 @@ export default new Router({
           name: 'pageDate',
           component: resolve => require(['../view/Page/pageDate.vue'], resolve)
         }]
+      }, {
+        path: '/takePhoto',
+        name: 'takePhoto',
+        component: resolve => require(['../view/TakePhoto/takePhoto.vue'], resolve)
       }]
     }
   ]
