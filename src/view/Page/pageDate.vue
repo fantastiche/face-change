@@ -1,4 +1,5 @@
 <template>
+  <div>fffffffff</div>
 </template>
 
 <script>
@@ -12,5 +13,5 @@
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="less" type="text/less" scoped>
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <transition :name="transitionName">
       <router-view class="child-view"></router-view>
     </transition>
@@ -8,12 +8,12 @@
 
 <script>
   export default {
-    data () {
+    data: function () {
       return {
         transitionName: 'slide-left'
       }
     },
-    beforeRouteUpdate (to, from, next) {
+    beforeRouteUpdate: function (to, from, next) {
       let isBack = this.$router.isBack
       if (isBack) {
         this.transitionName = 'slide-right'
@@ -30,6 +30,7 @@
   .child-view {
     position: absolute;
     width: 100%;
+    height: 100%;
     transition: all .8s cubic-bezier(.55, 0, .1, 1);
   }
 

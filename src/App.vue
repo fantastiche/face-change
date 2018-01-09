@@ -5,15 +5,27 @@
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  export default {
+    name: 'app'
+  }
 </script>
 
 <style lang="less">
-@import '~vux/src/styles/reset.less';
+  @import '~vux/src/styles/reset.less';
 
-body {
-  background-color: #fbf9fe;
-}
+  html {
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
+  }
+
+  #app {
+    height: 100%;
+  }
+
+  body {
+    background-color: #fbf9fe;
+  }
 </style>
