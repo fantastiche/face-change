@@ -3,12 +3,12 @@
  * @type {{ name : {path: string, method: string} }}
  */
 const common = {
-  serveRecord: {
-    path: 'getServeRecord.do',
-    method: 'GET'
+  uploadPicture: {
+    path: 'https://cs1.gzqqs.com/qqs/weixin/uploader/uploadPicture?',
+    method: 'POST'
   },
-  expenseRecord: {
-    path: 'getExpenseRecord.do',
+  add: {
+    path: 'qianjibianAdd.do?',
     method: 'GET'
   }
 }

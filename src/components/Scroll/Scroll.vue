@@ -1,0 +1,168 @@
+<template>
+  <div ref="wrapper" class="main-body-wrap">
+    <div class="refresh-wrap" v-if="flag">
+      {{text}}
+    </div>
+    <slot></slot>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import BScroll from 'better-scroll'
+
+  const DIRECTION_H = 'horizontal'
+  const DIRECTION_V = 'vertical'
+
+  export default {
+    name: 'Scroll',
+    components: {
+    },
+    props: {
+      probeType: {
+        type: Number,
+        default: 2
+      },
+      click: {
+        type: Boolean,
+        default: false
+      },
+      listenScroll: {
+        type: Boolean,
+        default: false
+      },
+      data: {
+        type: Array,
+        default: null
+      },
+      pullup: {
+        type: Boolean,
+        default: false
+      },
+      pulldown: {
+        type: Boolean,
+        default: true
+      },
+      pullDownRefresh: {
+        type: Boolean,
+        default: true
+      },
+      beforeScroll: {
+        type: Boolean,
+        default: false
+      },
+      refreshDelay: {
+        type: Number,
+        default: 20
+      },
+      direction: {
+        type: String,
+        default: DIRECTION_V
+      }
+    },
+    mounted: function () {
+      setTimeout(() => {
+        this._initScroll()
+      }, 20)
+    },
+    data: function () {
+      return {
+        text: '下拉刷新',
+        flag: false
+      }
+    },
+    methods: {
+      _initScroll: function () {
+        if (!this.$refs.wrapper) {
+          return
+        }
+        this.scroll = new BScroll(this.$refs.wrapper, {
+          probeType: this.probeType,
+          click: this.click,
+          eventPassthrough: this.direction === DIRECTION_V ? DIRECTION_H : DIRECTION_V,
+          pullDownRefresh: this.pullDownRefresh
+        })
+        if (this.listenScroll) {
+          this.scroll.on('scroll', (pos) => {
+            this.$emit('scroll', pos)
+          })
+        }
+
+        if (this.pullup) {
+          this.scroll.on('scrollEnd', () => {
+            if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+              this.$emit('scrollToEnd')
+            }
+          })
+        }
+
+        if (this.pulldown) {
+          this.scroll.on('scroll', (pos) => {
+            if (pos.y > 0) {
+              this.flag = true
+            }
+          })
+          this.scroll.on('scroll', (pos) => {
+            if (pos.y > 30) {
+              this.text = '释放立即刷新'
+            }
+          })
+
+          this.scroll.on('touchEnd', (pos) => {
+            console.log(pos.y)
+            if (pos.y >= 30) {
+              setTimeout(() => {
+                this.text = '刷新成功'
+                setTimeout(() => {
+                  this.flag = false
+                }, 200)
+              }, 700)
+            }
+          })
+        }
+
+        if (this.beforeScroll) {
+          this.scroll.on('beforeScrollStart', () => {
+            this.$emit('beforeScroll')
+          })
+        }
+      },
+      disable: function () {
+        this.scroll && this.scroll.disable()
+      },
+      enable: function () {
+        this.scroll && this.scroll.enable()
+      },
+      refresh: function () {
+        this.scroll && this.scroll.refresh()
+      },
+      scrollTo: function () {
+        this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+      },
+      scrollToElement: function () {
+        this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+      }
+    },
+    watch: {
+      data: function () {
+        setTimeout(() => {
+          this.refresh()
+        }, this.refreshDelay)
+      }
+    }
+  }
+</script>
+
+<style lang="less" type="text/less" scoped>
+  @import "../../common/less/mixin";
+
+  .main-body-wrap {
+    height: 724/@rem;
+    overflow: hidden;
+  }
+
+  .refresh-wrap {
+    height: 100/@rem;
+    line-height: 100/@rem;
+    text-align: center;
+  }
+</style>

@@ -23,6 +23,7 @@
 
 <script>
   export default {
+    components: {},
     name: 'MainBody',
     data: function () {
       return {}
