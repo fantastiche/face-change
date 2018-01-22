@@ -10,7 +10,7 @@
       <div class="active-flag" ref="activeFlag"></div>
     </div>
     <transition class="swiper" name="slide-fade">
-      <router-view></router-view>
+      <page :mainType="index" v-if="flag"></page>
     </transition>
     <div class="bottom">
       <router-link class="bottom-button" to="/takePhoto">
@@ -27,22 +27,24 @@
 
 <script>
   import {Tab, TabItem, Swiper, SwiperItem} from 'vux'
+  import Page from '../Page/pageAll'
 
   const list = () => [
-    {name: '全部', src: 'pageAll'},
-    {name: '约会', src: 'pageDate'},
-    {name: '逛街', src: 'pageAll'},
-    {name: '上班', src: 'pageAll'},
-    {name: '聚会', src: 'pageAll'},
-    {name: '新娘妆', src: 'pageAll'},
-    {name: '儿童表演妆', src: 'pageAll'}
+    {name: '全部', type: 0},
+    {name: '约会', type: 1},
+    {name: '逛街', type: 2},
+    {name: '上班', type: 3},
+    {name: '聚会', type: 4},
+    {name: '新娘妆', type: 5},
+    {name: '儿童表演妆', type: 6}
   ]
   export default {
     components: {
       Tab,
       TabItem,
       Swiper,
-      SwiperItem
+      SwiperItem,
+      Page
     },
     data: function () {
       return {
@@ -52,12 +54,14 @@
         item: [],
         index: 0,
         totalWidth: 0,
-        flagLeft: 0
+        flagLeft: 0,
+        flag: true
       }
     },
     methods: {
       switchTabItem: function (index) {
         const that = this
+        that.flag = false
         that.index = index
         that.totalWidth = 0
         for (let i = 0; i < that.index; i++) {
@@ -65,9 +69,9 @@
         }
         that.flagLeft = that.totalWidth + that.item[index].offsetWidth / 2 - that.$refs.activeFlag.offsetWidth / 2
         that.$refs.activeFlag.style.left = this.flagLeft + 'px'
-        that.$router.push({
-          path: `/index/${that.list2[index].src}`
-        })
+        setTimeout(() => {
+          that.flag = true
+        }, 10)
       }
     },
     created: function () {
@@ -75,9 +79,9 @@
     mounted: function () {
       const that = this
       this.$nextTick(function () {
-        that.$router.push({
-          path: '/index/pageAll'
-        })
+//        that.$router.push({
+//          path: '/index/pageAll'
+//        })
         that.item = document.getElementsByClassName('tab-item')
         that.flagLeft = that.item[0].offsetWidth / 2 - that.$refs.activeFlag.offsetWidth / 2
         that.$refs.activeFlag.style.left = this.flagLeft + 'px'
@@ -165,7 +169,7 @@
   }
 
   .slide-fade-enter-active {
-    transition: all .3s ease;
+    transition: all .6s ease;
   }
 
   .slide-fade-enter, .slide-fade-leave-to {

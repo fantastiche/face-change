@@ -1,14 +1,12 @@
 <template>
   <div ref="wrapper" class="main-body-wrap">
-    <div class="refresh-wrap" v-if="flag">
-      {{text}}
-    </div>
     <slot></slot>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
+  import {LoadMore} from 'vux'
 
   const DIRECTION_H = 'horizontal'
   const DIRECTION_V = 'vertical'
@@ -16,6 +14,7 @@
   export default {
     name: 'Scroll',
     components: {
+      LoadMore
     },
     props: {
       probeType: {
@@ -66,8 +65,6 @@
     },
     data: function () {
       return {
-        text: '下拉刷新',
-        flag: false
       }
     },
     methods: {
@@ -97,26 +94,11 @@
 
         if (this.pulldown) {
           this.scroll.on('scroll', (pos) => {
-            if (pos.y > 0) {
-              this.flag = true
-            }
-          })
-          this.scroll.on('scroll', (pos) => {
-            if (pos.y > 30) {
-              this.text = '释放立即刷新'
-            }
+            this.$emit('scroll', pos)
           })
 
           this.scroll.on('touchEnd', (pos) => {
-            console.log(pos.y)
-            if (pos.y >= 30) {
-              setTimeout(() => {
-                this.text = '刷新成功'
-                setTimeout(() => {
-                  this.flag = false
-                }, 200)
-              }, 700)
-            }
+            this.$emit('touchEnd', pos)
           })
         }
 
@@ -164,5 +146,6 @@
     height: 100/@rem;
     line-height: 100/@rem;
     text-align: center;
+    background: #fbf9fe;
   }
 </style>

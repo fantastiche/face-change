@@ -1,5 +1,9 @@
 <template>
   <div class="take-photo">
+    <div class="wrapper" v-if="wrapper">
+      <span class="weui-loading"></span>
+      <span class="wrapper-font">图片上传中....</span>
+    </div>
     <div class="take-photo-wrap">
       <div class="take-area">
         <div class="images" v-for="(item, index) in images">
@@ -41,9 +45,12 @@
   import {uncheck, checked} from '../../common/icon/icon-base64'
   import {uploadImg} from '../../models/upload-model'
   import commonModel from '../../models/common-model'
+  import {LoadMore} from 'vux'
 
   export default {
-    components: {},
+    components: {
+      LoadMore
+    },
     data: function () {
       return {
         list: [
@@ -79,6 +86,7 @@
         index: 0,
         wordListIndex: 0,
         flag: false,
+        wrapper: false,
         imgArray: [],
         wordList: [
           {
@@ -145,13 +153,13 @@
         reader.readAsDataURL(formData.get('file'))
         reader.onload = function (e) {
           that.images.push(e.target.result)
-          console.log(that.images)
         }
       },
       sub: function () {
         let that = this
-        let formData = new FormData()
+        that.wrapper = true
         for (let i = 0; i < that.fileList.length; i++) {
+          let formData = new FormData()
           formData.append('tp', that.fileList[i].get('file'))
           formData.append('memberId', 100)
           formData.append('type', 'change')
@@ -186,6 +194,7 @@
           }
           commonModel.add(params, (res) => {
             console.log(res)
+            that.wrapper = false
           }, () => {
           })
         }
@@ -346,4 +355,21 @@
   .mt-103 {
     margin-top: 103/@rem;
   }
+
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10005;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .wrapper-font {
+      .dpr-font(15px);
+      color: #ffffff;
+    }
+  }
+
 </style>

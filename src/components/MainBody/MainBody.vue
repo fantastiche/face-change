@@ -1,22 +1,20 @@
 <template>
   <div class="main-body border-1px">
     <div class="title">
-      <img src="./头像@2x.png" alt="">
-      <span>李丸子没有路</span>
+      <img :src="headImg" alt="">
+      <span>{{nickname}}</span>
     </div>
     <div class="main-body-detail">
+      <div class="word" v-if="word">{{word}}</div>
       <div class="photo">
-        <img src="./1@2x.png" alt="">
-        <img src="./1@2x.png" alt="">
-        <img src="./1@2x.png" alt="">
-        <img src="./1@2x.png" alt="">
+        <img :src="item.img" alt="" v-for="(item, index) in images">
       </div>
-      <span>上海.上海浦东国际机场1号航站楼</span>
-      <span>13小时前</span>
+      <span>{{address}}</span>
+      <span>{{createTime}}</span>
     </div>
     <div class="good">
       <img src="./zan.png" alt="">
-      <span>233人喜欢</span>
+      <span>{{praise}}人喜欢</span>
     </div>
   </div>
 </template>
@@ -25,6 +23,36 @@
   export default {
     components: {},
     name: 'MainBody',
+    props: {
+      headImg: {
+        type: String,
+        default: './头像@2x.png'
+      },
+      images: {
+        type: Array,
+        default: []
+      },
+      address: {
+        type: String,
+        default: ''
+      },
+      createTime: {
+        type: String,
+        default: ''
+      },
+      nickname: {
+        type: String,
+        default: ''
+      },
+      praise: {
+        type: Number,
+        default: ''
+      },
+      word: {
+        type: String,
+        default: ''
+      }
+    },
     data: function () {
       return {}
     },
@@ -62,6 +90,7 @@
       img {
         width: 78/@rem;
         height: 78/@rem;
+        border-radius: 50%;
       }
       span {
         color: #323232;
@@ -74,6 +103,11 @@
       margin-left: 104/@rem;
       margin-top: 30/@rem;
       margin-right: 180/@rem;
+      .word {
+        display: block;
+        .dpr-font(14px);
+        padding-bottom: 30/@rem;
+      }
       img {
         margin-left: 5/@rem;
         width: 169/@rem;

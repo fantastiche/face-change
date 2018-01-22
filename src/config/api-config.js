@@ -10,6 +10,10 @@ const common = {
   add: {
     path: 'qianjibianAdd.do?',
     method: 'GET'
+  },
+  list: {
+    path: 'getqianjibianInfo.do?',
+    method: 'GET'
   }
 }
 
